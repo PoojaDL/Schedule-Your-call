@@ -24,7 +24,7 @@ function myfunction(event) {
     document.querySelector('form').reset();
     // showData();
 
-    axios.post("https://crudcrud.com/api/1d87b9a593da44649784facc32fd3d8d/AppData", list)
+    axios.post("https://crudcrud.com/api/6a7c68fcd64f4993927497689c43f4bf/AppData", list)
       .then((response) => {
         showData(response.data)
       })
@@ -38,7 +38,7 @@ function myfunction(event) {
 }
 
 function refresh(){
-  axios.get("https://crudcrud.com/api/1d87b9a593da44649784facc32fd3d8d/AppData")
+  axios.get("https://crudcrud.com/api/6a7c68fcd64f4993927497689c43f4bf/AppData")
     .then((response) => {
 
       console.log(response.data)
@@ -67,6 +67,8 @@ function showData(obj) {
   const editbtn = document.createElement('input');
   editbtn.setAttribute('type', 'button');
   editbtn.setAttribute('value', 'edit');
+  editbtn.setAttribute('name', 'edit' + id);
+  editbtn.setAttribute('onclick', 'editbutton(event)');
   li.append(editbtn);
   //appending edit button
   const deletebtn = document.createElement('input');
@@ -83,11 +85,23 @@ function deletebutton(e){
   nameOfbtn = e.target.attributes[2].nodeValue;
   btnNumber = (nameOfbtn.slice(6, ));
   axios
-    .delete('https://crudcrud.com/api/1d87b9a593da44649784facc32fd3d8d/AppData/'+btnNumber)
+    .delete('https://crudcrud.com/api/6a7c68fcd64f4993927497689c43f4bf/AppData/'+btnNumber)
     .then((res)=>{
       ul.innerHTML=""
       refresh()
     })
 
     .catch(err=>console.log(err))
+}
+
+
+function editbutton(e) {
+  console.log(e);
+  nameOfbtn = e.target.attributes[2].nodeValue;
+  btnNumber = (nameOfbtn.slice(4, ));
+
+    axios.put('https://crudcrud.com/api/6a7c68fcd64f4993927497689c43f4bf/AppData/'+btnNumber)
+      .then(res=>showOutput(res))
+      .catch(err=>console.log(err))
+
 }
