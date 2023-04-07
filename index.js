@@ -25,16 +25,30 @@ function myfunction(event) {
     // showData();
     axios.post("https://crudcrud.com/api/0e33b134a57441ccad363945de892b3b/AppData", list)
       .then((response) => {
-        showData(response.data)
         console.log(response.data)
       })
       .catch((err) => {
         console.log(err);
       })
+
   } else {
     alert("Enter data to continue !");
   }
 }
+
+window.addEventListener("DOMContentLoaded",()=>{
+  axios.get("https://crudcrud.com/api/0e33b134a57441ccad363945de892b3b/AppData")
+    .then((response) => {
+
+      console.log(response.data)
+      for(let i=0;i<response.data.length;i++){
+        showData(response.data[i]);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+})
 
 
 // function to print list
