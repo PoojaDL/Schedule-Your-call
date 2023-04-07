@@ -23,9 +23,10 @@ function myfunction(event) {
 
     document.querySelector('form').reset();
     // showData();
-    axios.post("https://crudcrud.com/api/0e33b134a57441ccad363945de892b3b/AppData", list)
+
+    axios.post("https://crudcrud.com/api/1d87b9a593da44649784facc32fd3d8d/AppData", list)
       .then((response) => {
-        console.log(response.data)
+        showData(response.data)
       })
       .catch((err) => {
         console.log(err);
@@ -36,8 +37,8 @@ function myfunction(event) {
   }
 }
 
-window.addEventListener("DOMContentLoaded",()=>{
-  axios.get("https://crudcrud.com/api/0e33b134a57441ccad363945de892b3b/AppData")
+function refresh(){
+  axios.get("https://crudcrud.com/api/1d87b9a593da44649784facc32fd3d8d/AppData")
     .then((response) => {
 
       console.log(response.data)
@@ -48,8 +49,9 @@ window.addEventListener("DOMContentLoaded",()=>{
     .catch((err) => {
       console.log(err);
     })
-})
+}
 
+window.addEventListener("DOMContentLoaded",refresh())
 
 // function to print list
 
@@ -58,6 +60,7 @@ function showData(obj) {
   //appending list
   let li = document.createElement('li');
   let content=obj.name+"-"+obj.email+"-"+obj.phone+" ";
+  let id=obj._id;
   li.textContent = content;
   ul.appendChild(li);
   //appending delete button
@@ -69,6 +72,22 @@ function showData(obj) {
   const deletebtn = document.createElement('input');
   deletebtn.setAttribute('type', 'button');
   deletebtn.setAttribute('value', 'delete');
+  deletebtn.setAttribute('name', 'delete' + id);
+  deletebtn.setAttribute('onclick', 'deletebutton(event)');
   li.appendChild(deletebtn);
 
 };
+
+function deletebutton(e){
+  console.log(e);
+  nameOfbtn = e.target.attributes[2].nodeValue;
+  btnNumber = (nameOfbtn.slice(6, ));
+  axios
+    .delete('https://crudcrud.com/api/1d87b9a593da44649784facc32fd3d8d/AppData/'+btnNumber)
+    .then((res)=>{
+      ul.innerHTML=""
+      refresh()
+    })
+
+    .catch(err=>console.log(err))
+}
